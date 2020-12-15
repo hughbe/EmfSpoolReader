@@ -1,0 +1,52 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DataStream",
+        "repositoryURL": "https://github.com/hughbe/DataStream",
+        "state": {
+          "branch": null,
+          "revision": "858175a666cd9d9d45b2d9a364dba61a41940120",
+          "version": "2.0.3"
+        }
+      },
+      {
+        "package": "EmfReader",
+        "repositoryURL": "https://github.com/hughbe/EmfReader",
+        "state": {
+          "branch": null,
+          "revision": "3eb0dd74f73a03109668025877102beae3dbf034",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "BitField",
+        "repositoryURL": "https://github.com/hughbe/SwiftBitField",
+        "state": {
+          "branch": null,
+          "revision": "993f2e4ec4d4edfc598abd3e87cc813e937cffc1",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "WindowsDataTypes",
+        "repositoryURL": "https://github.com/hughbe/WindowsDataTypes",
+        "state": {
+          "branch": null,
+          "revision": "2d0efa7a0fbdb3eae9ff99456cb864382b883f4d",
+          "version": "1.0.10"
+        }
+      },
+      {
+        "package": "WmfReader",
+        "repositoryURL": "https://github.com/hughbe/WmfReader",
+        "state": {
+          "branch": null,
+          "revision": "fd5d5e67c231b6c9ff2d5b178f745c3e5a0bcdb7",
+          "version": "1.0.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
