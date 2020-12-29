@@ -25,7 +25,7 @@ import Foundation
 ///  Injected PostScript commands.
 /// This figure shows the following about EMFSPOOL files:
 public struct EmfSpoolFile {
-    public let header: Header
+    public let header: EmfSpoolHeader
     private let data: DataStream
 
     public init(data: Data) throws {
@@ -34,7 +34,7 @@ public struct EmfSpoolFile {
     }
 
     public init(dataStream: inout DataStream) throws {
-        self.header = try Header(dataStream: &dataStream)
+        self.header = try EmfSpoolHeader(dataStream: &dataStream)
         self.data = DataStream(slicing: dataStream, startIndex: dataStream.position, count: dataStream.remainingCount)
     }
 

@@ -51,7 +51,13 @@ public struct _DEVMODE {
     public let reserved8: UInt32
     public let dmDriverExtraData: [UInt8]
     
-    public init(dataStream: inout DataStream) throws {
+    public init(dataStream: inout DataStream, size: UInt32) throws {
+        let startPosition = dataStream.position
+        
+        guard size >= 0x000000DC && (size % 4) == 0 && size <= dataStream.remainingCount else {
+            throw EmfSpoolReadError.corrupted
+        }
+        
         /// dmDeviceName (64 bytes): A 32-element array of 16-bit Unicode characters that form a nullterminated string that specifies
         /// the name of the printer. Printer name strings that are longer than 32 characters are truncated to fit the array. For more rules
         /// governing printer names, see section 2.2.4.14.
@@ -266,9 +272,17 @@ public struct _DEVMODE {
         /// reserved8 (4 bytes): A value that SHOULD be zero when sent and MUST be ignored on receipt.
         self.reserved8 = try dataStream.read(endianess: .littleEndian)
         
+        guard dataStream.position - startPosition == self.dmSize else {
+            throw EmfSpoolReadError.corrupted
+        }
+        
         /// dmDriverExtraData (variable): This field can contain implementation-specific printer driver data.
         /// Its size in bytes is specified by the dmDriverExtra field.<98>
         self.dmDriverExtraData = try dataStream.readBytes(count: Int(self.dmDriverExtra))
+        
+        guard dataStream.position - startPosition == size else {
+            throw EmfSpoolReadError.corrupted
+        }
     }
     
     /// dmFields (4 bytes): A bitfield that specifies the fields of the _DEVMODE structure that have been initialized.

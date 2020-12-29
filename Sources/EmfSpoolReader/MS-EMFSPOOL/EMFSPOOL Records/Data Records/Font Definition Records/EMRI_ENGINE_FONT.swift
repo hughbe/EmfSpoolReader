@@ -29,7 +29,7 @@ public struct EMRI_ENGINE_FONT {
         /// cjSize (4 bytes): A 32-bit unsigned integer that specifies the size, in bytes, of the data attached to the record.
         /// The size of each record in an EMF spool format file MUST be rounded up to a multiple of 4 bytes.
         let cjSize: UInt32 = try dataStream.read(endianess: .littleEndian)
-        guard cjSize >= 8 && cjSize % 4 == 0 else {
+        guard cjSize >= 0x00000008 && cjSize % 4 == 0 && cjSize <= dataStream.remainingCount else {
             throw EmfSpoolReadError.corrupted
         }
         
@@ -45,7 +45,7 @@ public struct EMRI_ENGINE_FONT {
         
         /// NumFiles (4 bytes): A 32-bit unsigned integer that specifies the number of files attached to this record.
         self.numFiles = try dataStream.read(endianess: .littleEndian)
-        guard 8 + self.numFiles <= cjSize else {
+        guard 0x00000008 + self.numFiles * 0x00000004 <= cjSize else {
             throw EmfSpoolReadError.corrupted
         }
         

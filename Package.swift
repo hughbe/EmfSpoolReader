@@ -16,6 +16,8 @@ let package = Package(
         .package(url: "https://github.com/hughbe/DataStream", from: "2.0.0"),
         .package(url: "https://github.com/hughbe/WindowsDataTypes", from: "1.0.0"),
         .package(url: "https://github.com/hughbe/EmfReader", from: "1.0.0"),
+        .package(url: "https://github.com/hughbe/EmfPlusReader", from: "1.0.0"),
+        .package(url: "https://github.com/hughbe/WmfReader", from: "1.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -25,7 +27,7 @@ let package = Package(
             dependencies: ["DataStream", "EmfReader", "WindowsDataTypes"]),
         .testTarget(
             name: "EmfSpoolReaderTests",
-            dependencies: ["EmfSpoolReader"],
+            dependencies: ["EmfSpoolReader", "EmfPlusReader", "WmfReader"],
             resources: [.process("Resources")]),
     ]
 )

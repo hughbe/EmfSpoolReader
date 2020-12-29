@@ -28,7 +28,7 @@ public struct EMRI_DELTA_FONT {
         
         /// cjSize (4 bytes): An unsigned integer that specifies the size of the FontData field, in bytes.
         let cjSize: UInt32 = try dataStream.read(endianess: .littleEndian)
-        guard cjSize >= 8 && cjSize % 4 == 0 else {
+        guard cjSize >= 0x00000008 && cjSize % 4 == 0 && cjSize <= dataStream.remainingCount else {
             throw EmfSpoolReadError.corrupted
         }
         

@@ -1,5 +1,5 @@
 //
-//  Header.swift
+//  EmfSpoolHeader.swift
 //  
 //
 //  Created by Hugh Bellamy on 09/12/2020.
@@ -7,7 +7,9 @@
 
 import DataStream
 
-public struct Header {
+/// [MS-EMFSPOOL] 2.2.2 Header Record
+/// The Header record is always the first record of an EMFSPOOL metafile.
+public struct EmfSpoolHeader {
     public let dwVersion: UInt32
     public let cjSize: UInt32
     public let dpszDocName: UInt32
@@ -27,9 +29,10 @@ public struct Header {
         /// cjSize (4 bytes): A 32-bit unsigned integer that specifies the size, in bytes, of the header record, including extra data attached.
         /// The size of each record in EMFSPOOL MUST be rounded up to a multiple of 32 bits.
         let cjSize: UInt32 = try dataStream.read(endianess: .littleEndian)
-        guard cjSize >= 12 && (cjSize % 4) == 0 else {
+        guard cjSize >= 0x00000010 && (cjSize % 4) == 0 && cjSize - 0x00000008 <= dataStream.remainingCount else {
             throw EmfSpoolReadError.corrupted
         }
+
         self.cjSize = cjSize
         
         /// dpszDocName (4 bytes): A 32-bit unsigned integer that specifies the offset of the document name from the start of the
@@ -52,7 +55,7 @@ public struct Header {
             /// PaddingDocName (variable): An optional array of WORD structures as padding, because the DocName field is not
             /// required to immediately follow the dpszOutput field.
             /// The values of these structures are indeterminate and MUST be ignored.
-            guard dpszDocName >= 16 &&
+            guard dpszDocName >= 0x00000010 &&
                     startPosition + Int(dpszDocName) <= dataStream.count else {
                 throw EmfSpoolReadError.corrupted
             }
@@ -75,7 +78,7 @@ public struct Header {
             /// PaddingOutputDevice (variable): An optional array of WORD structures as padding, because the OutputDevice field
             /// is not required to immediately follow the extraDataDocName field.
             /// The values of these structures are indeterminate and MUST be ignored.
-            guard dpszOutput >= 16 &&
+            guard dpszOutput >= 0x00000010 &&
                     startPosition + Int(dpszOutput) <= dataStream.count else {
                 throw EmfSpoolReadError.corrupted
             }

@@ -1,7 +1,7 @@
 @testable import EmfSpoolReader
 import XCTest
 
-final class MetafileTests: XCTestCase {
+final class EmfSpoolFileTests: XCTestCase {
     func testExample() throws {
         do {
             let data = try getData(name: "EMF_SPL-to-EMF_00035", fileExtension: "SPL")

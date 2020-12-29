@@ -25,10 +25,12 @@ public struct EMRI_PRESTARTPAGE {
         
         /// cjSize (4 bytes): A 32-bit unsigned integer that specifies the size, in bytes, of the data attached to the record.
         /// Each record in EMF spool format MUST be aligned to a multiple of 4 bytes.
-        self.cjSize = try dataStream.read(endianess: .littleEndian)
-        guard cjSize == 8 else {
+        let cjSize: UInt32 = try dataStream.read(endianess: .littleEndian)
+        guard cjSize == 0x00000008 && cjSize <= dataStream.remainingCount else {
             throw EmfSpoolReadError.corrupted
         }
+        
+        self.cjSize = cjSize
         
         let startPosition = dataStream.position
 

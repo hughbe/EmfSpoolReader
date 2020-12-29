@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "EmfPlusReader",
+        "repositoryURL": "https://github.com/hughbe/EmfPlusReader",
+        "state": {
+          "branch": null,
+          "revision": "413b79253cbf344839459721fa107112d69c7af2",
+          "version": "1.0.0"
+        }
+      },
+      {
         "package": "EmfReader",
         "repositoryURL": "https://github.com/hughbe/EmfReader",
         "state": {
@@ -42,8 +51,8 @@
         "repositoryURL": "https://github.com/hughbe/WmfReader",
         "state": {
           "branch": null,
-          "revision": "fd5d5e67c231b6c9ff2d5b178f745c3e5a0bcdb7",
-          "version": "1.0.3"
+          "revision": "760baedbaed9f479a0e4b04a0504c7c797baeb92",
+          "version": "1.0.4"
         }
       }
     ]

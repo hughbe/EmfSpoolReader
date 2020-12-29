@@ -22,7 +22,7 @@ public struct EMRI_DEVMODE {
         /// CjSize (4 bytes): An unsigned integer that specifies the size of the Devmode field, in bytes.
         /// Each EMFSPOOL record MUST be aligned to a multiple of 32 bits.
         let cjSize: UInt32 = try dataStream.read(endianess: .littleEndian)
-        guard cjSize >= 220 && (cjSize % 4) == 0 else {
+        guard cjSize >= 0x000000DC && (cjSize % 4) == 0 && cjSize <= dataStream.remainingCount else {
             throw EmfSpoolReadError.corrupted
         }
         
@@ -32,7 +32,7 @@ public struct EMRI_DEVMODE {
         
         /// Devmode (variable): A _DEVMODE structure ([MS-RPRN] section 2.2.2.1), which defines the configuration and capabilities
         /// of an output device.
-        self.devmode = try _DEVMODE(dataStream: &dataStream)
+        self.devmode = try _DEVMODE(dataStream: &dataStream, size: self.cjSize)
         
         guard dataStream.position - startPosition == self.cjSize else {
             throw EmfSpoolReadError.corrupted

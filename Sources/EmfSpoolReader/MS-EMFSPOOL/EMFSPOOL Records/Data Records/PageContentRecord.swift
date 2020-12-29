@@ -44,7 +44,7 @@ public struct PageContentRecord {
         /// cjSize (4 bytes): A 32-bit unsigned integer that specifies the size, in bytes, of the metafile data attached to the record.
         /// The size of each record in EMF spool format MUST be rounded up to a multiple of 4 bytes.
         let cjSize: UInt32 = try dataStream.read(endianess: .littleEndian)
-        guard (cjSize % 4) == 0 else {
+        guard (cjSize % 4) == 0 && cjSize <= dataStream.remainingCount else {
             throw EmfSpoolReadError.corrupted
         }
         
@@ -58,12 +58,6 @@ public struct PageContentRecord {
                                                 startIndex: dataStream.position,
                                                 count: Int(self.cjSize))
             if try metafileDataStream.peek() as UInt32 == 0x00000001 {
-                let data = metafileDataStream.remainingData
-                let desktop = FileManager.default.urls(for: .desktopDirectory, in: .allDomainsMask)[0]
-                let file = desktop.appendingPathComponent("EMFSpool_\(counter.description.padLeft(toLength: 4, withPad: "0")).emf")
-                try data.write(to: file)
-                counter += 1
-                
                 self.emfMetafile = .emf(try EmfFile(dataStream: &metafileDataStream))
             } else {
                 self.emfMetafile = .unknown(try metafileDataStream.readBytes(count: Int(self.cjSize)))
